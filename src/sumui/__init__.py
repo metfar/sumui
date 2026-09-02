@@ -10,7 +10,7 @@
 #  (at your option) any later version.
 #  
 
-__version__ = "0.1.0a2";
+__version__ = "0.1.0a3";
 
 from .backend import BackendCapabilities;
 from .charts import AxisSpec, ChartSeries, ChartSpec, coerce_chart_spec;

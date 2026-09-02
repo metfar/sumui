@@ -1,0 +1,2 @@
+[console_scripts]
+sumchart = sumui.tools.chart:main

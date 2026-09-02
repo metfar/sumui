@@ -1,3 +1,5 @@
+CHANGELOG.md
+MANIFEST.in
 README.md
 pyproject.toml
 setup.cfg
@@ -11,5 +13,8 @@ src/sumui/specs.py
 src/sumui.egg-info/PKG-INFO
 src/sumui.egg-info/SOURCES.txt
 src/sumui.egg-info/dependency_links.txt
+src/sumui.egg-info/entry_points.txt
 src/sumui.egg-info/top_level.txt
+src/sumui/tools/__init__.py
+src/sumui/tools/chart.py
 tests/test_sumui.py

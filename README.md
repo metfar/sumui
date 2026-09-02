@@ -20,6 +20,19 @@ The same specification is consumable by both UI backends.
 
 Convenience constructors include `bar`, `pie`, `line`, `scatter`, `from_mapping`, `from_rows`, and the dependency-free `from_dataframe` adapter. The pandas adapter uses duck typing: pandas is not a dependency of sumUI.
 
+## `sumchart` backend dispatcher
+
+`sumUI` installs the small `sumchart` front controller. It reads the language-neutral `sum.chart/1` JSON format and dynamically loads the requested installed backend; `sumUI` itself remains free of rendering dependencies.
+
+```bash
+python chart.py | sumchart --backend=tui
+python chart.py | sumchart --backend=gui
+sumchart --demo --backend=tui
+sumchart --demo --backend=gui
+```
+
+The TUI backend supports `--renderer=ascii`, `unicode`, or `braille`. The GUI backend asks sumGUI to fit the requested window to the physical display before creating it.
+
 ## Graphics modes
 
 `GraphicsMode` separates a program's logical resolution from the physical display. Historical profiles such as Spectrum are compatibility profiles, while modern arbitrary `m x n` logical resolutions are first-class.

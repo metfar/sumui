@@ -134,3 +134,11 @@ class GraphicsProgramTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main();
+
+
+def test_sumchart_demo_produces_shared_contract():
+    from sumui.tools.chart import _parser, _read_spec;
+    args = _parser().parse_args(["--demo"]);
+    spec = _read_spec(args);
+    assert spec.kind == "bar";
+    assert spec.to_dict()["schema"] == "sum.chart/1";
