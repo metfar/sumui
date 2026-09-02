@@ -4,6 +4,7 @@ README.md
 pyproject.toml
 setup.cfg
 src/sumui/__init__.py
+src/sumui/application.py
 src/sumui/backend.py
 src/sumui/charts.py
 src/sumui/dialogio.py
@@ -17,4 +18,5 @@ src/sumui.egg-info/entry_points.txt
 src/sumui.egg-info/top_level.txt
 src/sumui/tools/__init__.py
 src/sumui/tools/chart.py
+tests/test_application_contract.py
 tests/test_sumui.py

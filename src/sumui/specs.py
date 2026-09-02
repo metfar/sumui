@@ -190,7 +190,7 @@ class DialogSpec:
     kind: str;
     title: str = "";
     text: str = "";
-    theme: str = "DOS";
+    theme: str = "ZX";
     width: object = None;
     height: object = None;
     timeout: object = None;
@@ -210,7 +210,7 @@ class DialogSpec:
             raise ValueError("dialog kind cannot be empty");
         self.title = str(self.title or "");
         self.text = str(self.text or "");
-        self.theme = str(self.theme or "DOS");
+        self.theme = str(self.theme or "ZX");
         self.width = None if self.width is None else max(1, int(self.width));
         self.height = None if self.height is None else max(1, int(self.height));
         self.timeout = None if self.timeout is None else max(0.0, float(self.timeout));

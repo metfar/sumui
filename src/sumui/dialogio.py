@@ -221,7 +221,7 @@ def parse_dialog_spec(text, source="<memory>"):
         raise ValueError("{}: unsupported form output {!r}".format(source, output));
     return DialogSpec(
         kind=section, title=str(values.get("title", "Form" if section == "form" else "MENU")),
-        text=str(values.get("text", "")), theme=str(values.get("theme", "DOS")), width=width, height=height,
+        text=str(values.get("text", "")), theme=str(values.get("theme", "ZX")), width=width, height=height,
         timeout=timeout, output=output, separator=str(values.get("separator", "\n")),
         ok_label=str(values.get("ok_label", "OK")), cancel_label=str(values.get("cancel_label", "Cancel")),
         button_width=button_width, button_height=max(1, int(button_height or 1)),

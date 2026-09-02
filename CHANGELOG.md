@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.0a5 - 2026-09-02
+- Changed the shared fresh-install theme default from DOS to ZX for dialog specifications and the common chart CLI.
+- Unknown/empty application theme selections now converge on the ecosystem ZX baseline through the renderer implementations.
+
+## 0.1.0a4 - 2026-09-02
+
+- Added the common application-presentation selector: `--gui`, `--tui` and `--ui-backend` now have one backend-neutral definition shared by Sum applications.
+- Added backend-neutral action/menu/function-key metadata contracts as the first step toward application definitions that are independent of terminal or Pygame rendering.
+- The architectural rule is explicit: `tui` and `gui` are presentations of one application, not names of separate applications.
+
 ## 0.1.0a3 - 2026-09-02
 
 - Added the backend-neutral `sumchart` command. It consumes the versioned `sum.chart/1` JSON interchange and dynamically dispatches to the installed sumTUI or sumGUI renderer.

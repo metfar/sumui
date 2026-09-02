@@ -10,9 +10,10 @@
 #  (at your option) any later version.
 #  
 
-__version__ = "0.1.0a3";
+__version__ = "0.1.0a5";
 
 from .backend import BackendCapabilities;
+from .application import BACKEND_NAMES, ActionSpec, FunctionKeySpec, MenuEntrySpec, MenuSpec, add_backend_arguments, backend_from_args, normalize_backend_name;
 from .charts import AxisSpec, ChartSeries, ChartSpec, coerce_chart_spec;
 from .events import EVENT_TYPES, UIEvent;
 from .dialogio import load_dialog_spec, parse_dialog_spec;
@@ -20,7 +21,7 @@ from .graphics import ColorSpec, GraphicsCommand, GraphicsMode, GraphicsProgram,
 from .specs import DialogSpec, FieldSpec, InputSpec, MenuItemSpec, normalize_allowed_values;
 
 __all__ = [
-    "__version__", "BackendCapabilities", "AxisSpec", "ChartSeries", "ChartSpec", "coerce_chart_spec",
+    "__version__", "BackendCapabilities", "BACKEND_NAMES", "ActionSpec", "FunctionKeySpec", "MenuEntrySpec", "MenuSpec", "add_backend_arguments", "backend_from_args", "normalize_backend_name", "AxisSpec", "ChartSeries", "ChartSpec", "coerce_chart_spec",
     "EVENT_TYPES", "UIEvent", "load_dialog_spec", "parse_dialog_spec", "ColorSpec", "GraphicsCommand", "GraphicsMode", "GraphicsProgram",
     "modern_mode", "spectrum_mode", "DialogSpec", "FieldSpec", "InputSpec", "MenuItemSpec",
     "normalize_allowed_values",

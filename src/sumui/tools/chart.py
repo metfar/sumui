@@ -27,7 +27,7 @@ def _parser():
     parser.add_argument("--renderer", choices=("auto", "ascii", "unicode", "braille"), default="auto", help="TUI glyph renderer");
     parser.add_argument("--width", type=int, default=None, help="text columns or requested GUI width");
     parser.add_argument("--height", type=int, default=None, help="text rows or requested GUI height");
-    parser.add_argument("--theme", default="DOS", help="GUI theme name");
+    parser.add_argument("--theme", default="ZX", help="GUI theme name");
     parser.add_argument("--demo", action="store_true", help="render a built-in shared ChartSpec");
     parser.add_argument("--version", action="version", version="sumchart {}".format(__version__));
     return parser;

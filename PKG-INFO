@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: sumui
-Version: 0.1.0a3
+Version: 0.1.0a5
 Summary: Backend-neutral UI, chart and graphics contracts for the Sum ecosystem.
 Author-email: William Martinez Bas <metfar@gmail.com>
 License: GPL-2.0-or-later
@@ -67,5 +67,9 @@ Charts and graphics modes support versioned JSON interchange (`sum.chart/1` and 
 text = chart.to_json();
 chart = ChartSpec.from_json(text);
 ```
+
+## One application, two presentations
+
+Sum applications select a presentation backend at runtime. `tui` and `gui` do **not** identify different application implementations: they render the same application state, commands and event semantics. The common CLI helpers provide `--gui`, `--tui` and `--ui-backend`. Action/menu metadata is also backend-neutral so a command can later be exposed through a terminal menu, graphical menu, toolbar or shortcut without duplicating application logic.
 
 <p align=center><b>- oOo -<b></p>

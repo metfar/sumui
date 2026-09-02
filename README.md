@@ -54,4 +54,8 @@ text = chart.to_json();
 chart = ChartSpec.from_json(text);
 ```
 
+## One application, two presentations
+
+Sum applications select a presentation backend at runtime. `tui` and `gui` do **not** identify different application implementations: they render the same application state, commands and event semantics. The common CLI helpers provide `--gui`, `--tui` and `--ui-backend`. Action/menu metadata is also backend-neutral so a command can later be exposed through a terminal menu, graphical menu, toolbar or shortcut without duplicating application logic.
+
 <p align=center><b>- oOo -<b></p>
