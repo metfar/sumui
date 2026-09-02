@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0a5 - 2026-09-02
+## 0.1.0a6 - 2026-09-02
 - Changed the shared fresh-install theme default from DOS to ZX for dialog specifications and the common chart CLI.
 - Unknown/empty application theme selections now converge on the ecosystem ZX baseline through the renderer implementations.
 

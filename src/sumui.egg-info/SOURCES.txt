@@ -7,6 +7,7 @@ src/sumui/__init__.py
 src/sumui/application.py
 src/sumui/backend.py
 src/sumui/charts.py
+src/sumui/datetime_widgets.py
 src/sumui/dialogio.py
 src/sumui/events.py
 src/sumui/graphics.py

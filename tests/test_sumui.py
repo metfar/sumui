@@ -142,3 +142,15 @@ def test_sumchart_demo_produces_shared_contract():
     spec = _read_spec(args);
     assert spec.kind == "bar";
     assert spec.to_dict()["schema"] == "sum.chart/1";
+
+
+def test_datetime_models():
+    from datetime import date, time, datetime;
+    from sumui import CalendarModel, TimeModel, DateTimeModel;
+    calendar = CalendarModel(date(2026, 9, 2));
+    assert calendar.move_days(1) == date(2026, 9, 3);
+    assert len(calendar.month_matrix()) >= 4;
+    clock = TimeModel(time(23, 59, 59));
+    assert clock.move_seconds(1) == time(0, 0, 0);
+    stamp = DateTimeModel(datetime(2026, 9, 2, 12, 30, 0));
+    assert stamp.formatted().startswith("2026-09-02 12:30");
