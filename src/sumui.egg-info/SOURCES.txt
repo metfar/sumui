@@ -1,0 +1,15 @@
+README.md
+pyproject.toml
+setup.cfg
+src/sumui/__init__.py
+src/sumui/backend.py
+src/sumui/charts.py
+src/sumui/dialogio.py
+src/sumui/events.py
+src/sumui/graphics.py
+src/sumui/specs.py
+src/sumui.egg-info/PKG-INFO
+src/sumui.egg-info/SOURCES.txt
+src/sumui.egg-info/dependency_links.txt
+src/sumui.egg-info/top_level.txt
+tests/test_sumui.py
