@@ -16,6 +16,7 @@
 #  
 
 from dataclasses import dataclass, field;
+import base64;
 import json;
 
 
@@ -135,6 +136,121 @@ class ColorSpec:
 
 
 @dataclass(frozen=True)
+class ImageSpec:
+    width: int;
+    height: int;
+    pixels: bytes = b"";
+    pixel_format: str = "rgba32";
+    options: tuple = field(default_factory=tuple);
+
+    def __post_init__(self):
+        width = int(self.width);
+        height = int(self.height);
+        if width <= 0 or height <= 0:
+            raise ValueError("image dimensions must be positive");
+        pixels = bytes(self.pixels or b"");
+        pixel_format = str(self.pixel_format or "rgba32").lower();
+        channels = 4 if pixel_format in ("rgba", "rgba32", "argb32") else 3;
+        expected = width * height * channels;
+        if pixels and len(pixels) != expected:
+            raise ValueError("image payload length does not match dimensions");
+        options = tuple(self.options.items()) if isinstance(self.options, dict) else tuple(self.options or ());
+        object.__setattr__(self, "width", width);
+        object.__setattr__(self, "height", height);
+        object.__setattr__(self, "pixels", pixels);
+        object.__setattr__(self, "pixel_format", pixel_format);
+        object.__setattr__(self, "options", options);
+
+    @property
+    def size(self):
+        return (self.width, self.height);
+
+    def to_dict(self):
+        return {
+            "schema": "sum.image/1",
+            "width": self.width,
+            "height": self.height,
+            "pixel_format": self.pixel_format,
+            "pixels_base64": base64.b64encode(self.pixels).decode("ascii"),
+            "options": dict(self.options),
+        };
+
+    @classmethod
+    def from_dict(cls, data):
+        data = dict(data or {});
+        schema = data.pop("schema", "sum.image/1");
+        if schema != "sum.image/1":
+            raise ValueError("Unsupported image schema: {}".format(schema));
+        payload = data.pop("pixels_base64", "");
+        pixels = base64.b64decode(payload.encode("ascii")) if payload else b"";
+        return cls(data.get("width", 0), data.get("height", 0), pixels, data.get("pixel_format", "rgba32"), tuple(dict(data.get("options", {}) or {}).items()));
+
+
+@dataclass(frozen=True)
+class TableSpec:
+    rows: tuple = field(default_factory=tuple);
+    headers: tuple = field(default_factory=tuple);
+    title: str = "";
+    options: tuple = field(default_factory=tuple);
+
+    def __post_init__(self):
+        rows = tuple(tuple(row) for row in (self.rows or ()));
+        headers = tuple(str(value) for value in (self.headers or ()));
+        options = tuple(self.options.items()) if isinstance(self.options, dict) else tuple(self.options or ());
+        object.__setattr__(self, "rows", rows);
+        object.__setattr__(self, "headers", headers);
+        object.__setattr__(self, "title", str(self.title or ""));
+        object.__setattr__(self, "options", options);
+
+    def to_dict(self):
+        return {"schema": "sum.table/1", "headers": list(self.headers), "rows": [list(row) for row in self.rows], "title": self.title, "options": dict(self.options)};
+
+    @classmethod
+    def from_dict(cls, data):
+        data = dict(data or {});
+        schema = data.pop("schema", "sum.table/1");
+        if schema != "sum.table/1":
+            raise ValueError("Unsupported table schema: {}".format(schema));
+        return cls(tuple(tuple(row) for row in data.get("rows", ())), tuple(data.get("headers", ())), data.get("title", ""), tuple(dict(data.get("options", {}) or {}).items()));
+
+
+def _graphics_value_to_dict(value):
+    if isinstance(value, ImageSpec):
+        return value.to_dict();
+    if isinstance(value, TableSpec):
+        return value.to_dict();
+    try:
+        from .charts import ChartSpec;
+        if isinstance(value, ChartSpec):
+            return value.to_dict();
+    except ImportError:
+        pass;
+    if isinstance(value, tuple):
+        return [_graphics_value_to_dict(item) for item in value];
+    if isinstance(value, list):
+        return [_graphics_value_to_dict(item) for item in value];
+    if isinstance(value, dict):
+        return {key: _graphics_value_to_dict(item) for key, item in value.items()};
+    return value;
+
+
+def _graphics_value_from_dict(value):
+    if isinstance(value, dict):
+        schema = value.get("schema");
+        if schema == "sum.image/1":
+            return ImageSpec.from_dict(value);
+        if schema == "sum.table/1":
+            return TableSpec.from_dict(value);
+        if schema == "sum.chart/1":
+            from .charts import ChartSpec;
+            return ChartSpec.from_dict(value);
+        return {key: _graphics_value_from_dict(item) for key, item in value.items()};
+    if isinstance(value, list):
+        return tuple(_graphics_value_from_dict(item) for item in value);
+    return value;
+
+
+@dataclass(frozen=True)
 class GraphicsCommand:
     operation: str;
     arguments: tuple = field(default_factory=tuple);
@@ -150,12 +266,12 @@ class GraphicsCommand:
         object.__setattr__(self, "options", options);
 
     def to_dict(self):
-        return {"operation": self.operation, "arguments": list(self.arguments), "options": dict(self.options)};
+        return {"operation": self.operation, "arguments": [_graphics_value_to_dict(item) for item in self.arguments], "options": {key: _graphics_value_to_dict(value) for key, value in self.options}};
 
     @classmethod
     def from_dict(cls, data):
         data = dict(data or {});
-        return cls(data.get("operation", ""), tuple(data.get("arguments", ()) or ()), tuple(dict(data.get("options", {}) or {}).items()));
+        return cls(data.get("operation", ""), tuple(_graphics_value_from_dict(item) for item in (data.get("arguments", ()) or ())), tuple((key, _graphics_value_from_dict(value)) for key, value in dict(data.get("options", {}) or {}).items()));
 
 
 @dataclass(frozen=True)
@@ -212,6 +328,10 @@ class GraphicsProgram:
 
 def modern_mode(width, height, scaling="fit", resizable=True, fullscreen=False, **options):
     return GraphicsMode(width, height, pixel_format="rgba32", scaling=scaling, profile="modern", resizable=resizable, fullscreen=fullscreen, options=tuple(options.items()));
+
+
+def basic_mode(width, height, scaling="fit", resizable=True, fullscreen=False, **options):
+    return GraphicsMode(width, height, pixel_format="rgba32", scaling=scaling, profile="basic", resizable=resizable, fullscreen=fullscreen, options=tuple(options.items()));
 
 
 def spectrum_mode(scaling="integer"):

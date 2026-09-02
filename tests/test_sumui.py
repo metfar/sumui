@@ -154,3 +154,31 @@ def test_datetime_models():
     assert clock.move_seconds(1) == time(0, 0, 0);
     stamp = DateTimeModel(datetime(2026, 9, 2, 12, 30, 0));
     assert stamp.formatted().startswith("2026-09-02 12:30");
+
+
+def test_image_and_table_contracts_round_trip():
+    from sumui import GraphicsCommand, ImageSpec, TableSpec;
+    image = ImageSpec(2, 1, b"\x01\x02\x03\xff" * 2);
+    table = TableSpec((("Android", 500), ("Linux", 800)), ("OS", "Users"), "Usage");
+    command = GraphicsCommand("put", (10, 20, image), (("table", table),));
+    restored = GraphicsCommand.from_dict(command.to_dict());
+    assert isinstance(restored.arguments[2], ImageSpec);
+    assert restored.arguments[2].pixels == image.pixels;
+    assert isinstance(dict(restored.options)["table"], TableSpec);
+    assert dict(restored.options)["table"].headers == ("OS", "Users");
+
+
+def test_radar_chart_is_shared_contract():
+    from sumui import ChartSpec;
+    spec = ChartSpec.radar(("A", "B", "C"), (1, 2, 3), title="Radar", name="Users");
+    assert spec.kind == "radar";
+    assert spec.categories == ("A", "B", "C");
+    assert spec.series[0].values == (1.0, 2.0, 3.0);
+    assert ChartSpec.from_json(spec.to_json()) == spec;
+
+
+def test_basic_mode_preserves_arbitrary_resolution_with_basic_palette_profile():
+    from sumui import basic_mode;
+    mode = basic_mode(640, 480);
+    assert mode.size == (640, 480);
+    assert mode.profile == "basic";

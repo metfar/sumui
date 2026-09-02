@@ -25,7 +25,7 @@ from dataclasses import dataclass, field;
 import json;
 
 
-_VALID_KINDS = ("bar", "line", "scatter", "pie");
+_VALID_KINDS = ("bar", "line", "scatter", "pie", "radar");
 
 
 def _tuple(value):
@@ -205,11 +205,20 @@ class ChartSpec:
         );
 
     @classmethod
+    def radar(cls, categories, values, title="", name="", **options):
+        return cls(
+            "radar", title=title, categories=_tuple(categories),
+            series=(ChartSeries(name=name, values=values),), options=tuple(options.items()),
+        );
+
+    @classmethod
     def from_mapping(cls, mapping, kind="bar", title="", **options):
         labels = tuple(str(key) for key in mapping.keys());
         values = tuple(mapping[key] for key in mapping.keys());
         if str(kind).lower() == "pie":
             return cls.pie(labels, values, title=title, **options);
+        if str(kind).lower() == "radar":
+            return cls.radar(labels, values, title=title, **options);
         return cls.bar(labels, values, title=title, **options);
 
     @classmethod
@@ -222,6 +231,8 @@ class ChartSpec:
         values = tuple(row[1] for row in rows);
         if str(kind).lower() == "pie":
             return cls.pie(labels, values, title=title, **options);
+        if str(kind).lower() == "radar":
+            return cls.radar(labels, values, title=title, **options);
         return cls.bar(labels, values, title=title, **options);
 
     @classmethod
@@ -252,5 +263,7 @@ def coerce_chart_spec(value, kind=None, title="", x_label="", y_label=""):
     if chart_kind == "scatter":
         return ChartSpec.scatter(value, title=title, x_label=x_label, y_label=y_label);
     if chart_kind == "pie":
+        return ChartSpec.from_rows(value, kind=chart_kind, title=title);
+    if chart_kind == "radar":
         return ChartSpec.from_rows(value, kind=chart_kind, title=title);
     return ChartSpec.from_rows(value, kind=chart_kind, title=title, x_label=x_label, y_label=y_label);

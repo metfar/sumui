@@ -58,4 +58,9 @@ chart = ChartSpec.from_json(text);
 
 Sum applications select a presentation backend at runtime. `tui` and `gui` do **not** identify different application implementations: they render the same application state, commands and event semantics. The common CLI helpers provide `--gui`, `--tui` and `--ui-backend`. Action/menu metadata is also backend-neutral so a command can later be exposed through a terminal menu, graphical menu, toolbar or shortcut without duplicating application logic.
 
+
+## Images, tables and report graphics
+
+`ImageSpec` and `TableSpec` are backend-neutral values with versioned JSON interchange (`sum.image/1` and `sum.table/1`). `GraphicsCommand` can carry them together with `ChartSpec`, allowing languages such as sumBASIC to capture/restore images and compose tables/charts without importing Pygame. The common chart model supports bar, line, scatter, pie and radar charts; renderers decide how those contracts appear in terminal or graphical output.
+
 <p align=center><b>- oOo -<b></p>

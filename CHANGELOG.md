@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0a7 - 2026-09-02
+- Added backend-neutral `ImageSpec` (`sum.image/1`) and `TableSpec` (`sum.table/1`) contracts.
+- Added the arbitrary-resolution BASIC graphics profile used by sumBASIC without binding the language to Pygame.
+- Extended `GraphicsCommand` serialization so image, table and chart values survive JSON interchange.
+- Added radar charts to the shared `ChartSpec` model.
+
 ## 0.1.0a6 - 2026-09-02
 - Changed the shared fresh-install theme default from DOS to ZX for dialog specifications and the common chart CLI.
 - Unknown/empty application theme selections now converge on the ecosystem ZX baseline through the renderer implementations.
