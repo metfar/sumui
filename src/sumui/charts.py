@@ -27,7 +27,7 @@ import json;
 from .typography import FontSpec;
 
 
-_VALID_KINDS = ("bar", "line", "scatter", "pie", "radar");
+_VALID_KINDS = ("bar", "bar3d", "line", "scatter", "pie", "radar");
 
 
 def _tuple(value):
@@ -198,6 +198,18 @@ class ChartSpec:
             series=(ChartSeries(name=name, values=values),),
             x_axis=AxisSpec(label=x_label), y_axis=AxisSpec(label=y_label), options=tuple(options.items()),
         );
+
+    @classmethod
+    def stacked_bar(cls, categories, series, title="", **options):
+        normalized = tuple(item if isinstance(item, ChartSeries) else ChartSeries(**item) if isinstance(item, dict) else ChartSeries(values=item) for item in series);
+        return cls("bar", title=title, categories=_tuple(categories), series=normalized, stacked=True, options=tuple(options.items()));
+
+    @classmethod
+    def bar3d(cls, categories, values=None, title="", name="", series=None, stacked=False, **options):
+        normalized = tuple(series or ());
+        if not normalized:
+            normalized = (ChartSeries(name=name, values=values or ()),);
+        return cls("bar3d", title=title, categories=_tuple(categories), series=normalized, stacked=stacked, options=tuple(options.items()));
 
     @classmethod
     def pie(cls, categories, values, title="", name="", **options):

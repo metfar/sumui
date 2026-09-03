@@ -1,3 +1,7 @@
+# r20 coordinated release
+
+- Aligned with SUM r20 architecture and package versions.
+
 ## 0.1.0a10
 
 - Extended `sumchart` GUI dispatch with optional native/Matplotlib/Seaborn chart renderers while preserving one `ChartSpec`.
