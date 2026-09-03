@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: sumui
-Version: 0.1.0a9
+Version: 0.1.0a10
 Summary: Backend-neutral UI, chart and graphics contracts for the Sum ecosystem.
 Author-email: William Martinez Bas <metfar@gmail.com>
 License: GPL-2.0-or-later
@@ -36,13 +36,15 @@ Convenience constructors include `bar`, `pie`, `line`, `scatter`, `from_mapping`
 
 ## `sumchart` backend dispatcher
 
-`sumUI` installs the small `sumchart` front controller. It reads the language-neutral `sum.chart/1` JSON format and dynamically loads the requested installed backend; `sumUI` itself remains free of rendering dependencies.
+`sumUI` installs the small `sumchart` front controller. It reads the language-neutral `sum.chart/1` JSON format and dynamically loads the requested installed backend; `sumUI` itself remains free of rendering dependencies. The GUI dispatcher can request the native SumGUI renderer or optional Matplotlib/Seaborn renderers while consuming the same `ChartSpec`.
 
 ```bash
 python chart.py | sumchart --backend=tui
 python chart.py | sumchart --backend=gui
 sumchart --demo --backend=tui
 sumchart --demo --backend=gui
+sumchart --demo --backend=gui --chart-renderer=matplotlib
+sumchart --demo --backend=gui --chart-renderer=seaborn
 ```
 
 The TUI backend supports `--renderer=ascii`, `unicode`, or `braille`. The GUI backend asks sumGUI to fit the requested window to the physical display before creating it.

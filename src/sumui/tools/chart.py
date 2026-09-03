@@ -25,6 +25,7 @@ def _parser():
     parser.add_argument("source", nargs="?", default="-", help="sum.chart/1 JSON file, or '-' for stdin");
     parser.add_argument("--backend", choices=("tui", "text", "gui"), default="tui", help="renderer backend; default tui");
     parser.add_argument("--renderer", choices=("auto", "ascii", "unicode", "braille"), default="auto", help="TUI glyph renderer");
+    parser.add_argument("--chart-renderer", choices=("native", "matplotlib", "seaborn"), default="native", help="GUI chart renderer; default native");
     parser.add_argument("--width", type=int, default=None, help="text columns or requested GUI width");
     parser.add_argument("--height", type=int, default=None, help="text rows or requested GUI height");
     parser.add_argument("--theme", default="ZX", help="GUI theme name");
@@ -66,7 +67,7 @@ def _render_gui(spec, args):
     try:
         import pygame;
         from sumgui import ChartView;
-        from sumgui.display import fit_window_size;
+        from sumgui.display import fit_window_size, set_default_icon;
         from sumgui.theme import make_theme;
     except ImportError as exc:
         raise RuntimeError("GUI rendering requires sumGUI and Pygame") from exc;
@@ -75,8 +76,9 @@ def _render_gui(spec, args):
     requested = (args.width or 800, args.height or 520);
     width, height = fit_window_size(requested[0], requested[1]);
     flags = getattr(pygame, "RESIZABLE", 0);
+    set_default_icon();
     screen = pygame.display.set_mode((width, height), flags);
-    pygame.display.set_caption(spec.title or "sumchart");
+    pygame.display.set_caption(spec.title or "Σ sumchart");
     clock = pygame.time.Clock();
     font = pygame.font.SysFont("monospace", max(12, min(20, height // 28)));
     theme = make_theme(args.theme);
@@ -95,7 +97,13 @@ def _render_gui(spec, args):
         screen.fill(theme.bg);
         margin = max(12, min(width, height) // 32);
         rect = pygame.Rect(margin, margin, max(40, width - margin * 2), max(40, height - margin * 2));
-        ChartView(rect, spec, font, theme).draw(screen);
+        if args.chart_renderer == "native":
+            ChartView(rect, spec, font, theme).draw(screen);
+        else:
+            from sumgui.chart_backends import render_chart_rgba;
+            rendered_width, rendered_height, rgba = render_chart_rgba(spec, rect.width, rect.height, theme, renderer=args.chart_renderer);
+            image = pygame.image.fromstring(rgba, (rendered_width, rendered_height), "RGBA");
+            screen.blit(image, rect.topleft);
         pygame.display.flip();
         clock.tick(60);
     pygame.quit();

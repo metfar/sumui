@@ -1,3 +1,8 @@
+## 0.1.0a10
+
+- Extended `sumchart` GUI dispatch with optional native/Matplotlib/Seaborn chart renderers while preserving one `ChartSpec`.
+- Sum chart GUI windows now request the project-owned Sigma icon.
+
 ## 0.1.0a9
 
 - Added shared BASIC/EGA 16-color and deterministic VGA-style 256-color palette contracts.
