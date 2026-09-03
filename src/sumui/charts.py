@@ -24,6 +24,8 @@
 from dataclasses import dataclass, field;
 import json;
 
+from .typography import FontSpec;
+
 
 _VALID_KINDS = ("bar", "line", "scatter", "pie", "radar");
 
@@ -92,6 +94,11 @@ class ChartSpec:
     legend: bool = True;
     stacked: bool = False;
     options: tuple = field(default_factory=tuple);
+    font: FontSpec = field(default_factory=FontSpec);
+    title_font: FontSpec = field(default_factory=FontSpec);
+    axis_font: FontSpec = field(default_factory=FontSpec);
+    tick_font: FontSpec = field(default_factory=FontSpec);
+    legend_font: FontSpec = field(default_factory=FontSpec);
 
     def __post_init__(self):
         kind = str(self.kind or "").strip().lower();
@@ -118,6 +125,11 @@ class ChartSpec:
         object.__setattr__(self, "legend", bool(self.legend));
         object.__setattr__(self, "stacked", bool(self.stacked));
         object.__setattr__(self, "options", options);
+        object.__setattr__(self, "font", FontSpec.from_dict(self.font));
+        object.__setattr__(self, "title_font", FontSpec.from_dict(self.title_font));
+        object.__setattr__(self, "axis_font", FontSpec.from_dict(self.axis_font));
+        object.__setattr__(self, "tick_font", FontSpec.from_dict(self.tick_font));
+        object.__setattr__(self, "legend_font", FontSpec.from_dict(self.legend_font));
 
     def option(self, name, default=None):
         for key, value in self.options:
@@ -140,6 +152,11 @@ class ChartSpec:
             "legend": self.legend,
             "stacked": self.stacked,
             "options": dict(self.options),
+            "font": self.font.to_dict(),
+            "title_font": self.title_font.to_dict(),
+            "axis_font": self.axis_font.to_dict(),
+            "tick_font": self.tick_font.to_dict(),
+            "legend_font": self.legend_font.to_dict(),
         };
 
     def to_json(self, **kwargs):
@@ -163,6 +180,11 @@ class ChartSpec:
             legend=data.get("legend", True),
             stacked=data.get("stacked", False),
             options=tuple(dict(data.get("options", {}) or {}).items()),
+            font=FontSpec.from_dict(data.get("font", {})),
+            title_font=FontSpec.from_dict(data.get("title_font", {})),
+            axis_font=FontSpec.from_dict(data.get("axis_font", {})),
+            tick_font=FontSpec.from_dict(data.get("tick_font", {})),
+            legend_font=FontSpec.from_dict(data.get("legend_font", {})),
         );
 
     @classmethod

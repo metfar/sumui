@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0a8 - 2026-09-02
+
+- Added `screen_mode()`/`display_mode()` with historical SCREEN 12/13, modern color/depth, AUTO/MANUAL refresh and active/visible page contracts.
+- Added reusable Python `sumui.bgi`, `sumui.conio` and `sumui.stdio` compatibility facades.
+- Formalized `FontSpec` use for shared graphics/chart/table typography.
+
 ## 0.1.0a7 - 2026-09-02
 - Added backend-neutral `ImageSpec` (`sum.image/1`) and `TableSpec` (`sum.table/1`) contracts.
 - Added the arbitrary-resolution BASIC graphics profile used by sumBASIC without binding the language to Pygame.

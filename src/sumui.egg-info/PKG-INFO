@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: sumui
-Version: 0.1.0a7
+Version: 0.1.0a8
 Summary: Backend-neutral UI, chart and graphics contracts for the Sum ecosystem.
 Author-email: William Martinez Bas <metfar@gmail.com>
 License: GPL-2.0-or-later
@@ -76,5 +76,17 @@ Sum applications select a presentation backend at runtime. `tui` and `gui` do **
 ## Images, tables and report graphics
 
 `ImageSpec` and `TableSpec` are backend-neutral values with versioned JSON interchange (`sum.image/1` and `sum.table/1`). `GraphicsCommand` can carry them together with `ChartSpec`, allowing languages such as sumBASIC to capture/restore images and compose tables/charts without importing Pygame. The common chart model supports bar, line, scatter, pie and radar charts; renderers decide how those contracts appear in terminal or graphical output.
+
+## r17 compatibility surfaces
+
+The common layer now includes backend-neutral typography, historical/modern display profiles and Python compatibility facades:
+
+```python
+from sumui import bgi, conio, stdio
+```
+
+`sumui.bgi` reproduces the educational BGI programming model without loading proprietary `.BGI` driver files. It emits Sum graphics contracts and can be rendered by sumGUI. `sumui.conio` exposes classic cursor, keyboard, color and text-window operations with a terminal backend by default and pluggable graphical backends. `sumui.stdio` provides stream-oriented `printf`/`puts`/character helpers and can route stdout/stderr through the active conio backend.
+
+Historical `SCREEN 12` and `SCREEN 13` profiles coexist with `display_mode()` for arbitrary resolutions, palette/depth declarations, AUTO/MANUAL presentation and active/visible pages.
 
 <p align=center><b>- oOo -<b></p>

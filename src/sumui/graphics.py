@@ -19,6 +19,8 @@ from dataclasses import dataclass, field;
 import base64;
 import json;
 
+from .typography import FontSpec;
+
 
 @dataclass(frozen=True)
 class GraphicsMode:
@@ -192,6 +194,9 @@ class TableSpec:
     headers: tuple = field(default_factory=tuple);
     title: str = "";
     options: tuple = field(default_factory=tuple);
+    font: FontSpec = field(default_factory=FontSpec);
+    title_font: FontSpec = field(default_factory=FontSpec);
+    header_font: FontSpec = field(default_factory=FontSpec);
 
     def __post_init__(self):
         rows = tuple(tuple(row) for row in (self.rows or ()));
@@ -201,9 +206,21 @@ class TableSpec:
         object.__setattr__(self, "headers", headers);
         object.__setattr__(self, "title", str(self.title or ""));
         object.__setattr__(self, "options", options);
+        object.__setattr__(self, "font", FontSpec.from_dict(self.font));
+        object.__setattr__(self, "title_font", FontSpec.from_dict(self.title_font));
+        object.__setattr__(self, "header_font", FontSpec.from_dict(self.header_font));
 
     def to_dict(self):
-        return {"schema": "sum.table/1", "headers": list(self.headers), "rows": [list(row) for row in self.rows], "title": self.title, "options": dict(self.options)};
+        return {
+            "schema": "sum.table/1",
+            "headers": list(self.headers),
+            "rows": [list(row) for row in self.rows],
+            "title": self.title,
+            "options": dict(self.options),
+            "font": self.font.to_dict(),
+            "title_font": self.title_font.to_dict(),
+            "header_font": self.header_font.to_dict(),
+        };
 
     @classmethod
     def from_dict(cls, data):
@@ -211,7 +228,15 @@ class TableSpec:
         schema = data.pop("schema", "sum.table/1");
         if schema != "sum.table/1":
             raise ValueError("Unsupported table schema: {}".format(schema));
-        return cls(tuple(tuple(row) for row in data.get("rows", ())), tuple(data.get("headers", ())), data.get("title", ""), tuple(dict(data.get("options", {}) or {}).items()));
+        return cls(
+            tuple(tuple(row) for row in data.get("rows", ())),
+            tuple(data.get("headers", ())),
+            data.get("title", ""),
+            tuple(dict(data.get("options", {}) or {}).items()),
+            FontSpec.from_dict(data.get("font", {})),
+            FontSpec.from_dict(data.get("title_font", {})),
+            FontSpec.from_dict(data.get("header_font", {})),
+        );
 
 
 def _graphics_value_to_dict(value):
@@ -336,3 +361,42 @@ def basic_mode(width, height, scaling="fit", resizable=True, fullscreen=False, *
 
 def spectrum_mode(scaling="integer"):
     return GraphicsMode(256, 192, pixel_format="indexed", scaling=scaling, profile="spectrum", text_columns=32, text_rows=24, resizable=True, options=(("attribute_columns", 32), ("attribute_rows", 24)));
+
+
+_SCREEN_MODES = {
+    12: (640, 480, 16, 4),
+    13: (320, 200, 256, 8),
+};
+
+
+def screen_mode(number, colorswitch=0, active_page=0, visible_page=0, scaling="fit"):
+    """Return a historical QBASIC/GW-BASIC compatible graphics mode.
+
+    The first implemented historical profiles are SCREEN 12 and SCREEN 13.
+    Page options are carried in the neutral mode contract; backends decide how
+    to allocate/present their buffers.
+    """;
+    number=int(number);
+    if number not in _SCREEN_MODES:
+        raise ValueError("unsupported historical SCREEN mode: {}".format(number));
+    width,height,colors,bits=_SCREEN_MODES[number];
+    active=max(0,int(active_page or 0)); visible=max(0,int(visible_page or 0)); pages=max(active,visible)+1;
+    return GraphicsMode(width,height,pixel_format="indexed{}".format(bits),scaling=scaling,profile="qbasic",resizable=True,options=(("screen_mode",number),("colors",colors),("bits_per_pixel",bits),("colorswitch",int(colorswitch or 0)),("pages",pages),("active_page",active),("visible_page",visible),("refresh","auto")));
+
+
+def display_mode(width, height, color_spec=32, refresh="auto", pages=1, active_page=0, visible_page=0, scaling="fit", **options):
+    """Create a modern arbitrary-resolution display mode with page buffering.""";
+    width=int(width); height=int(height); pages=max(1,int(pages or 1)); active=max(0,int(active_page or 0)); visible=max(0,int(visible_page or 0)); pages=max(pages,active+1,visible+1);
+    refresh=str(refresh or "auto").strip().lower();
+    if refresh not in ("auto","manual"): raise ValueError("refresh must be AUTO or MANUAL");
+    colors=None; bits=None;
+    if isinstance(color_spec,str):
+        token=color_spec.strip().upper();
+        if token.endswith("BIT"): bits=int(token[:-3]);
+        else: colors=int(token);
+    else: colors=int(color_spec);
+    if bits is None and colors is not None and colors > 0:
+        import math; bits=max(1,int(math.ceil(math.log(colors,2))));
+    pixel_format="rgba32" if (bits or 32) > 8 else "indexed{}".format(bits or 8);
+    opts={"colors":colors,"bits_per_pixel":bits,"refresh":refresh,"pages":pages,"active_page":active,"visible_page":visible}; opts.update(options);
+    return GraphicsMode(width,height,pixel_format=pixel_format,scaling=scaling,profile="modern",resizable=True,options=tuple(opts.items()));

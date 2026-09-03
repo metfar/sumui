@@ -6,12 +6,16 @@ setup.cfg
 src/sumui/__init__.py
 src/sumui/application.py
 src/sumui/backend.py
+src/sumui/bgi.py
 src/sumui/charts.py
+src/sumui/conio.py
 src/sumui/datetime_widgets.py
 src/sumui/dialogio.py
 src/sumui/events.py
 src/sumui/graphics.py
 src/sumui/specs.py
+src/sumui/stdio.py
+src/sumui/typography.py
 src/sumui.egg-info/PKG-INFO
 src/sumui.egg-info/SOURCES.txt
 src/sumui.egg-info/dependency_links.txt

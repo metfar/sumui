@@ -182,3 +182,64 @@ def test_basic_mode_preserves_arbitrary_resolution_with_basic_palette_profile():
     mode = basic_mode(640, 480);
     assert mode.size == (640, 480);
     assert mode.profile == "basic";
+
+
+def test_historical_screen_modes_and_modern_display_pages():
+    from sumui import display_mode, screen_mode;
+    mode12 = screen_mode(12, active_page=1, visible_page=0);
+    assert mode12.size == (640, 480);
+    assert mode12.option("colors") == 16;
+    assert mode12.option("pages") == 2;
+    mode13 = screen_mode(13);
+    assert mode13.size == (320, 200);
+    assert mode13.option("colors") == 256;
+    modern = display_mode(800, 600, 65536, refresh="manual", pages=3, active_page=2, visible_page=1);
+    assert modern.option("refresh") == "manual";
+    assert modern.option("pages") == 3;
+    assert modern.option("bits_per_pixel") == 16;
+
+
+def test_fontspec_is_serialized_by_chart_and_table():
+    from sumui import ChartSeries, ChartSpec, FontSpec, TableSpec;
+    font = FontSpec(family="monospace", size=10);
+    chart = ChartSpec("bar", categories=("A",), series=(ChartSeries("x", (1,)),), font=font, title_font=FontSpec(size=12, bold=True));
+    restored = ChartSpec.from_json(chart.to_json());
+    assert restored.font.size == 10;
+    assert restored.title_font.size == 12;
+    table = TableSpec((("A", 1),), ("Name", "Value"), "T", font=font);
+    assert TableSpec.from_dict(table.to_dict()).font.family == "monospace";
+
+
+def test_bgi_facade_emits_common_contracts_without_real_driver_files():
+    from sumui import GraphicsCommand, GraphicsMode;
+    from sumui import bgi;
+    received = [];
+    bgi.use_backend(lambda item: received.append(item) or item);
+    bgi.initgraph(bgi.DETECT, 12, "C:/IGNORED/BGI");
+    bgi.setcolor(bgi.LIGHTCYAN);
+    bgi.circle(10, 20, 5);
+    bgi.arc(10, 20, 0, 180, 5);
+    bgi.outtextxy(1, 2, "Sum");
+    assert isinstance(received[0], GraphicsMode);
+    assert received[0].size == (640, 480);
+    operations = [item.operation for item in received if isinstance(item, GraphicsCommand)];
+    assert "circle" in operations;
+    assert "arc" in operations;
+    assert "text" in operations;
+    bgi.closegraph();
+
+
+def test_conio_terminal_backend_uses_one_based_coordinates_and_stdio_routes():
+    import io;
+    from sumui import conio, stdio;
+    output = io.StringIO();
+    backend = conio.TerminalConioBackend(stdin=io.StringIO("X"), stdout=output);
+    conio.use_backend(backend);
+    conio.gotoxy(10, 5);
+    conio.cputs("Casa");
+    assert conio.wherex() == 14;
+    assert conio.wherey() == 5;
+    stdio_output = io.StringIO();
+    stdio.set_streams(stdout=stdio_output);
+    assert stdio.printf("%s %d", "Sum", 17) == 6;
+    assert stdio_output.getvalue() == "Sum 17";
