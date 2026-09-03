@@ -22,6 +22,54 @@ import json;
 from .typography import FontSpec;
 
 
+BASIC16_PALETTE = (
+    (0, 0, 0), (0, 0, 170), (0, 170, 0), (0, 170, 170),
+    (170, 0, 0), (170, 0, 170), (170, 85, 0), (170, 170, 170),
+    (85, 85, 85), (85, 85, 255), (85, 255, 85), (85, 255, 255),
+    (255, 85, 85), (255, 85, 255), (255, 255, 85), (255, 255, 255),
+);
+
+
+def _build_vga256_palette():
+    palette = list(BASIC16_PALETTE);
+    levels = (0, 51, 102, 153, 204, 255);
+    for red in levels:
+        for green in levels:
+            for blue in levels:
+                palette.append((red, green, blue));
+    for index in range(24):
+        value = int(round(index * 255.0 / 23.0));
+        palette.append((value, value, value));
+    return tuple(palette[:256]);
+
+
+VGA256_PALETTE = _build_vga256_palette();
+
+
+def indexed_basic_color(value, colors=16):
+    """Resolve a BASIC color number without losing the classic 0..15 aliases.
+
+    The first sixteen values always use the familiar EGA/QBASIC palette.
+    256-color modes extend that with a deterministic VGA-style palette.
+    16-bit modes use RGB565 after the classic aliases, and larger modes accept
+    packed 0xRRGGBB integers.
+    """;
+    index = int(value);
+    color_count = max(1, int(colors or 16));
+    if 0 <= index < 16:
+        return BASIC16_PALETTE[index];
+    if color_count <= 256 and 0 <= index < 256:
+        return VGA256_PALETTE[index];
+    if color_count <= 65536 and 0 <= index <= 0xFFFF:
+        red = ((index >> 11) & 0x1F) * 255 // 31;
+        green = ((index >> 5) & 0x3F) * 255 // 63;
+        blue = (index & 0x1F) * 255 // 31;
+        return (red, green, blue);
+    if 0 <= index <= 0xFFFFFF:
+        return ((index >> 16) & 255, (index >> 8) & 255, index & 255);
+    raise ValueError("BASIC color is outside the active color space: {}".format(index));
+
+
 @dataclass(frozen=True)
 class GraphicsMode:
     logical_width: int;
@@ -381,7 +429,7 @@ def screen_mode(number, colorswitch=0, active_page=0, visible_page=0, scaling="f
         raise ValueError("unsupported historical SCREEN mode: {}".format(number));
     width,height,colors,bits=_SCREEN_MODES[number];
     active=max(0,int(active_page or 0)); visible=max(0,int(visible_page or 0)); pages=max(active,visible)+1;
-    return GraphicsMode(width,height,pixel_format="indexed{}".format(bits),scaling=scaling,profile="qbasic",resizable=True,options=(("screen_mode",number),("colors",colors),("bits_per_pixel",bits),("colorswitch",int(colorswitch or 0)),("pages",pages),("active_page",active),("visible_page",visible),("refresh","auto")));
+    return GraphicsMode(width,height,pixel_format="indexed{}".format(bits),scaling=scaling,profile="qbasic",resizable=True,options=(("screen_mode",number),("colors",colors),("bits_per_pixel",bits),("colorswitch",int(colorswitch or 0)),("palette_profile","basic"),("pages",pages),("active_page",active),("visible_page",visible),("refresh","auto")));
 
 
 def display_mode(width, height, color_spec=32, refresh="auto", pages=1, active_page=0, visible_page=0, scaling="fit", **options):

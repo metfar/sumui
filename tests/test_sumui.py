@@ -243,3 +243,10 @@ def test_conio_terminal_backend_uses_one_based_coordinates_and_stdio_routes():
     stdio.set_streams(stdout=stdio_output);
     assert stdio.printf("%s %d", "Sum", 17) == 6;
     assert stdio_output.getvalue() == "Sum 17";
+
+
+def test_r18_basic_palette_keeps_classic_aliases_and_supports_256_and_rgb565():
+    from sumui import BASIC16_PALETTE, VGA256_PALETTE, indexed_basic_color;
+    assert indexed_basic_color(11, 65536) == BASIC16_PALETTE[11];
+    assert indexed_basic_color(200, 256) == VGA256_PALETTE[200];
+    assert indexed_basic_color(0xF800, 65536) == (255, 0, 0);

@@ -1,3 +1,9 @@
+## 0.1.0a9
+
+- Added shared BASIC/EGA 16-color and deterministic VGA-style 256-color palette contracts.
+- Added BASIC color resolution that preserves classic color numbers 0..15 in modern displays and supports indexed-8, RGB565 and packed RGB color spaces.
+- Historical SCREEN 12/13 modes now explicitly advertise the BASIC palette profile.
+
 # Changelog
 
 ## 0.1.0a8 - 2026-09-02
