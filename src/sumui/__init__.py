@@ -10,7 +10,7 @@
 #  (at your option) any later version.
 #  
 
-__version__ = "0.1.0a11";
+__version__ = "0.1.0a12";
 
 from .backend import BackendCapabilities;
 from .application import BACKEND_NAMES, ActionSpec, FunctionKeySpec, MenuEntrySpec, MenuSpec, add_backend_arguments, backend_from_args, normalize_backend_name;
@@ -21,10 +21,12 @@ from .graphics import BASIC16_PALETTE, VGA256_PALETTE, ColorSpec, GraphicsComman
 from .specs import DialogSpec, FieldSpec, InputSpec, MenuItemSpec, normalize_allowed_values;
 from .datetime_widgets import CalendarModel, DateTimeModel, TimeModel;
 from .typography import FontSpec;
+from .screen import BorderPattern, CursorState, DEFAULT_LAYER_ORDER, LayerStack, ScreenPlanes, TextScreen, coerce_cursor_state, normalize_layer_name;
 
 __all__ = [
     "__version__", "BackendCapabilities", "BACKEND_NAMES", "ActionSpec", "FunctionKeySpec", "MenuEntrySpec", "MenuSpec", "add_backend_arguments", "backend_from_args", "normalize_backend_name", "AxisSpec", "ChartSeries", "ChartSpec", "coerce_chart_spec",
     "EVENT_TYPES", "UIEvent", "load_dialog_spec", "parse_dialog_spec", "BASIC16_PALETTE", "VGA256_PALETTE", "indexed_basic_color", "ColorSpec", "GraphicsCommand", "GraphicsMode", "GraphicsProgram", "ImageSpec", "TableSpec",
     "basic_mode", "display_mode", "modern_mode", "screen_mode", "spectrum_mode", "DialogSpec", "FieldSpec", "InputSpec", "MenuItemSpec",
     "normalize_allowed_values", "CalendarModel", "TimeModel", "DateTimeModel", "FontSpec",
+    "CursorState", "coerce_cursor_state", "TextScreen", "DEFAULT_LAYER_ORDER", "normalize_layer_name", "LayerStack", "BorderPattern", "ScreenPlanes",
 ];

@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: sumui
-Version: 0.1.0a10
+Version: 0.1.0a12
 Summary: Backend-neutral UI, chart and graphics contracts for the Sum ecosystem.
 Author-email: William Martinez Bas <metfar@gmail.com>
 License: GPL-2.0-or-later

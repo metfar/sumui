@@ -3,6 +3,7 @@ MANIFEST.in
 README.md
 pyproject.toml
 setup.cfg
+setup.py
 src/sumui/__init__.py
 src/sumui/application.py
 src/sumui/backend.py
@@ -13,6 +14,7 @@ src/sumui/datetime_widgets.py
 src/sumui/dialogio.py
 src/sumui/events.py
 src/sumui/graphics.py
+src/sumui/screen.py
 src/sumui/specs.py
 src/sumui/stdio.py
 src/sumui/typography.py
@@ -24,4 +26,6 @@ src/sumui.egg-info/top_level.txt
 src/sumui/tools/__init__.py
 src/sumui/tools/chart.py
 tests/test_application_contract.py
+tests/test_r202_screen.py
+tests/test_r20_charts.py
 tests/test_sumui.py
