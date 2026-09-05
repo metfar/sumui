@@ -31,3 +31,11 @@ def test_border_pattern_and_planes():
     assert pattern.color(0,0)==1;
     planes=ScreenPlanes(graphics_width=256,graphics_height=192,graphics_colors=16,border_pattern=pattern);
     assert (planes.gwidth,planes.gheight,planes.gcolors)==(256,192,16);
+
+
+def test_r2021_border_width_contract():
+    from sumui import ScreenPlanes, coerce_border_width;
+    assert coerce_border_width(24) == 24;
+    assert ScreenPlanes(border_width=12).bwidth == 12;
+    import pytest;
+    with pytest.raises(ValueError): coerce_border_width(-1);

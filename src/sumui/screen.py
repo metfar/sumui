@@ -38,6 +38,12 @@ _CURSOR_ALIASES = {
 };
 
 
+def coerce_border_width(value):
+    width = int(value);
+    if width < 0: raise ValueError("border width must be non-negative");
+    return width;
+
+
 def coerce_cursor_state(value):
     if isinstance(value, CursorState): return value;
     if value is False: return CursorState.HIDDEN;
@@ -168,6 +174,7 @@ class ScreenPlanes:
     graphics_colors: int = 16;
     paper: object = 0;
     border: object = 0;
+    border_width: int = 0;
     layers: LayerStack = field(default_factory=LayerStack);
     border_pattern: object = None;
 
@@ -177,6 +184,8 @@ class ScreenPlanes:
     def gheight(self): return max(1, int(self.graphics_height));
     @property
     def gcolors(self): return max(1, int(self.graphics_colors));
+    @property
+    def bwidth(self): return coerce_border_width(self.border_width);
 
 
-__all__ = ["CursorState", "coerce_cursor_state", "TextScreen", "DEFAULT_LAYER_ORDER", "normalize_layer_name", "LayerStack", "BorderPattern", "ScreenPlanes"];
+__all__ = ["CursorState", "coerce_cursor_state", "coerce_border_width", "TextScreen", "DEFAULT_LAYER_ORDER", "normalize_layer_name", "LayerStack", "BorderPattern", "ScreenPlanes"];
