@@ -1,3 +1,7 @@
+## 0.1.0a14
+
+- Added the backend-neutral extended `asc_h` character repertoire and lookup helpers for editor character charts. Historical ASC-H numeric positions are preserved while BASIC command/token ranges are explicitly reserved.
+
 # r20 coordinated release
 
 - Aligned with SUM r20 architecture and package versions.
