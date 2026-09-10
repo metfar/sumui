@@ -16,6 +16,7 @@ src/sumui/datetime_widgets.py
 src/sumui/dialogio.py
 src/sumui/events.py
 src/sumui/graphics.py
+src/sumui/resources.py
 src/sumui/screen.py
 src/sumui/specs.py
 src/sumui/stdio.py

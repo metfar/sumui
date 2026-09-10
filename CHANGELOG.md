@@ -1,3 +1,8 @@
+## 0.1.0a15
+
+- Added backend-neutral `ResourceSchema` contracts for reusable Create/Read/Update/Delete/List/Search/Import/Export mini-applications.
+- Resource schemas can generate normalized `DialogSpec` forms for create, update and search operations, allowing the same resource definition to drive CLI, TUI and GUI frontends.
+
 ## 0.1.0a14
 
 - Added the backend-neutral extended `asc_h` character repertoire and lookup helpers for editor character charts. Historical ASC-H numeric positions are preserved while BASIC command/token ranges are explicitly reserved.

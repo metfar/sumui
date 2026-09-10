@@ -56,6 +56,26 @@ text = chart.to_json();
 chart = ChartSpec.from_json(text);
 ```
 
+## Small resource applications
+
+`ResourceSchema` describes the data fields and capabilities of small Create/Read/Update/Delete/List/Search/Import/Export applications without choosing a renderer. Create, update and search operations can be projected into the common `DialogSpec` form model, so a SUM language can declare a resource once and hand the resulting form to `sumdialog`, a TUI frontend or a graphical frontend.
+
+```python
+from sumui import FieldSpec, ResourceSchema;
+
+contacts = ResourceSchema(
+    "contacts",
+    title="Contacts",
+    fields=(
+        FieldSpec("name", label="Name", required=True),
+        FieldSpec("email", label="Email"),
+    ),
+);
+form = contacts.dialog_spec("create");
+```
+
+The schema is intentionally a contract rather than a storage engine: applications remain free to use JSON, SQLite, xBase tables, remote services or another persistence layer while keeping one interaction model.
+
 ## One application, two presentations
 
 Sum applications select a presentation backend at runtime. `tui` and `gui` do **not** identify different application implementations: they render the same application state, commands and event semantics. The common CLI helpers provide `--gui`, `--tui` and `--ui-backend`. Action/menu metadata is also backend-neutral so a command can later be exposed through a terminal menu, graphical menu, toolbar or shortcut without duplicating application logic.

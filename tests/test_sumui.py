@@ -250,3 +250,24 @@ def test_r18_basic_palette_keeps_classic_aliases_and_supports_256_and_rgb565():
     assert indexed_basic_color(11, 65536) == BASIC16_PALETTE[11];
     assert indexed_basic_color(200, 256) == VGA256_PALETTE[200];
     assert indexed_basic_color(0xF800, 65536) == (255, 0, 0);
+
+class ResourceSchemaTests(unittest.TestCase):
+    def test_resource_schema_roundtrip_and_dialog_bridge(self):
+        from sumui import FieldSpec, ResourceSchema;
+        schema = ResourceSchema(
+            "contacts", title="Contacts", key="id",
+            fields=(FieldSpec("id", "ID", required=True), FieldSpec("name", "Name", required=True), FieldSpec("active", "Active", kind="checkbox", default=True)),
+        ).normalize();
+        restored = ResourceSchema.from_json(schema.to_json());
+        self.assertEqual(restored.to_dict(), schema.to_dict());
+        form = restored.dialog_spec("create", {"name": "Ada"}, theme="Dark");
+        self.assertEqual(form.kind, "form");
+        self.assertEqual(form.theme, "Dark");
+        self.assertEqual(dict(form.options)["operation"], "create");
+        self.assertEqual(form.fields[1].default, "Ada");
+
+    def test_search_form_makes_fields_optional(self):
+        from sumui import FieldSpec, ResourceSchema;
+        schema = ResourceSchema("items", fields=(FieldSpec("id", "ID", required=True), FieldSpec("title", "Title", required=True))).normalize();
+        form = schema.dialog_spec("search");
+        self.assertFalse(any(item.required for item in form.fields));
