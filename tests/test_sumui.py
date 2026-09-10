@@ -271,3 +271,16 @@ class ResourceSchemaTests(unittest.TestCase):
         schema = ResourceSchema("items", fields=(FieldSpec("id", "ID", required=True), FieldSpec("title", "Title", required=True))).normalize();
         form = schema.dialog_spec("search");
         self.assertFalse(any(item.required for item in form.fields));
+
+
+def test_resource_search_form_defaults_to_unconstrained_filters():
+    from sumui import FieldSpec, ResourceSchema;
+    schema = ResourceSchema("things", fields=(
+        FieldSpec("name", "Name", default="Untitled", required=True),
+        FieldSpec("kind", "Kind", kind="combo", default="Book", options=("Book", "Game")),
+        FieldSpec("done", "Done", kind="boolean", default=False),
+    )).normalize();
+    spec = schema.dialog_spec("search");
+    assert spec.fields[0].default == "" and spec.fields[0].required is False;
+    assert spec.fields[1].default == "" and spec.fields[1].options[0] == "";
+    assert spec.fields[2].kind == "combo" and spec.fields[2].options == ("", "true", "false");

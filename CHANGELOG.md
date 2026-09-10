@@ -1,3 +1,8 @@
+## 0.1.0a16
+
+- Resource-schema search forms now start unconstrained: create-time defaults are cleared, choices gain an explicit “any” value, and booleans use a tri-state any/true/false selector.
+- This keeps one backend-neutral schema usable by CLI, TUI and graphical `sumgdialog` search forms without silently adding filters.
+
 ## 0.1.0a15
 
 - Added backend-neutral `ResourceSchema` contracts for reusable Create/Read/Update/Delete/List/Search/Import/Export mini-applications.

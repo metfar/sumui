@@ -96,6 +96,17 @@ class ResourceSchema:
             if operation == "search":
                 data["required"] = False;
                 data["confirm"] = False;
+                # Search forms are filters, not creation forms: an untouched
+                # field means "any".  Do not silently constrain a search by
+                # the resource's create-time default value.
+                if source.name not in current:
+                    data["default"] = "";
+                kind = str(data.get("kind") or "entry").lower();
+                if kind in ("bool", "boolean", "check", "checkbox"):
+                    data["kind"] = "combo";
+                    data["options"] = ("", "true", "false");
+                elif data.get("options"):
+                    data["options"] = tuple([""] + [item for item in data["options"] if str(item) != ""]);
             fields.append(FieldSpec.from_dict(data));
         labels = {"create": "Create", "update": "Update", "search": "Search"};
         return DialogSpec(
