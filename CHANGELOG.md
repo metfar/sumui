@@ -1,3 +1,8 @@
+## 0.1.0a19
+
+- Treat Pygame/SDL Right Alt (`KMOD_RALT`) as AltGr/`ISO_Level3_Shift` in addition to `KMOD_MODE`, preserving X11/XKB/Xmodmap Level-3 and Level-4 text input.
+- Keep Left Alt available for real Alt/Meta shortcuts while suppressing synthetic Ctrl/Alt bits produced by AltGr.
+
 ## 0.1.0a18
 
 - Add the shared SUM plain-text clipboard service used by GUI, TUI and terminal frontends.

@@ -1,4 +1,4 @@
-# sumUI 0.1.0a18
+# sumUI 0.1.0a19
 
 `sumUI` contains backend-neutral contracts shared by the Sum ecosystem.
 
@@ -6,7 +6,7 @@ The package-level command reports the installed release just like the other SUM 
 
 ```bash
 sumui --version
-# sumUI 0.1.0a18
+# sumUI 0.1.0a19
 ```
 
 It is intentionally small and has no rendering dependency. `sumTUI` can render a `ChartSpec` with text/Unicode/Braille while `sumGUI` renders the same object through Pygame. Future language frontends such as sumBASIC, sumC, sumCPP, sumASM, sumPY and sumR should create these neutral specifications instead of depending directly on a terminal or graphical backend.
@@ -21,6 +21,10 @@ from sumui import get_clipboard_text, set_clipboard_text;
 set_clipboard_text("Σ SUM");
 print(get_clipboard_text());
 ```
+
+## Keyboard modifier normalization
+
+`sumUI.keyboard.pygame_modifier_state()` keeps SDL/Pygame modifier semantics consistent across SUM frontends. On X11, AltGr/`ISO_Level3_Shift` may arrive as `KMOD_MODE`, as Right Alt (`KMOD_RALT`), or with synthetic Ctrl+Alt bits. SumUI treats those forms as AltGr while preserving Left Alt as the real Alt/Meta modifier, allowing XKB/Xmodmap to produce Level-3 and Level-4 Unicode characters without application-specific key tables.
 
 ## Charts
 
