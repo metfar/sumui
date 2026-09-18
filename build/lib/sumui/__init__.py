@@ -10,7 +10,7 @@
 #  (at your option) any later version.
 #  
 
-__version__ = "0.1.0a18";
+__version__ = "0.1.0a19";
 
 from .backend import BackendCapabilities;
 from .application import BACKEND_NAMES, ActionSpec, FunctionKeySpec, MenuEntrySpec, MenuSpec, add_backend_arguments, backend_from_args, normalize_backend_name;

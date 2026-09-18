@@ -22,9 +22,18 @@ def pygame_modifier_state(modifiers, pygame_module):
     module = pygame_module;
     value = int(modifiers or 0);
     mode_mask = int(getattr(module, "KMOD_MODE", 0) or 0);
-    altgr = bool(mode_mask and (value & mode_mask));
+    left_alt_mask = int(getattr(module, "KMOD_LALT", 0) or 0);
+    right_alt_mask = int(getattr(module, "KMOD_RALT", 0) or 0);
+    combined_alt_mask = int(getattr(module, "KMOD_ALT", 0) or 0);
+    mode_altgr = bool(mode_mask and (value & mode_mask));
+    right_alt = bool(right_alt_mask and (value & right_alt_mask));
+    altgr = bool(mode_altgr or right_alt);
     shift = bool(value & int(getattr(module, "KMOD_SHIFT", 0) or 0));
     ctrl = bool(value & int(getattr(module, "KMOD_CTRL", 0) or 0)) and not altgr;
-    alt = bool(value & int(getattr(module, "KMOD_ALT", 0) or 0)) and not altgr;
+    if left_alt_mask or right_alt_mask:
+        alt = bool(left_alt_mask and (value & left_alt_mask));
+    else:
+        alt = bool(combined_alt_mask and (value & combined_alt_mask)) and not altgr;
     gui = bool(value & int(getattr(module, "KMOD_GUI", getattr(module, "KMOD_META", 0)) or 0));
-    return {"shift": shift, "ctrl": ctrl, "alt": alt, "altgr": altgr, "gui": gui};
+    return {"shift": shift, "ctrl": ctrl, "alt": alt, "altgr": altgr, "gui": gui,
+            "left_alt": bool(left_alt_mask and (value & left_alt_mask)), "right_alt": right_alt};
