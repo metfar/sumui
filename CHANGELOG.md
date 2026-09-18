@@ -1,3 +1,9 @@
+## 0.1.0a18
+
+- Add the shared SUM plain-text clipboard service used by GUI, TUI and terminal frontends.
+- Prefer the historical Python `clipboard` backend, with direct X11 (`xclip`/`xsel`) and active-Wayland fallbacks.
+- Keep an internal fallback for headless execution while publishing real Copy operations to the desktop clipboard whenever available.
+
 ## 0.1.0a17
 
 - Added the `sumui` front-controller entry point so the package reports its installed version consistently with the rest of the SUM ecosystem (`sumui --version`).

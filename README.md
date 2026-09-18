@@ -1,4 +1,4 @@
-# sumUI
+# sumUI 0.1.0a18
 
 `sumUI` contains backend-neutral contracts shared by the Sum ecosystem.
 
@@ -6,10 +6,21 @@ The package-level command reports the installed release just like the other SUM 
 
 ```bash
 sumui --version
-# sumUI 0.1.0a17
+# sumUI 0.1.0a18
 ```
 
 It is intentionally small and has no rendering dependency. `sumTUI` can render a `ChartSpec` with text/Unicode/Braille while `sumGUI` renders the same object through Pygame. Future language frontends such as sumBASIC, sumC, sumCPP, sumASM, sumPY and sumR should create these neutral specifications instead of depending directly on a terminal or graphical backend.
+
+## Shared system clipboard
+
+`sumUI` owns the backend-neutral plain-text clipboard service used by the rest of SUM.  It prefers the Python `clipboard` library when available and falls back to native X11 (`xclip`/`xsel`) or an active Wayland session.  This keeps Copy/Paste interoperable between SUM applications and the desktop instead of trapping copied text inside one frontend.
+
+```python
+from sumui import get_clipboard_text, set_clipboard_text;
+
+set_clipboard_text("Σ SUM");
+print(get_clipboard_text());
+```
 
 ## Charts
 

@@ -12,11 +12,13 @@ src/sumui/bgi.py
 src/sumui/characters.py
 src/sumui/charts.py
 src/sumui/cli.py
+src/sumui/clipboard.py
 src/sumui/conio.py
 src/sumui/datetime_widgets.py
 src/sumui/dialogio.py
 src/sumui/events.py
 src/sumui/graphics.py
+src/sumui/keyboard.py
 src/sumui/resources.py
 src/sumui/screen.py
 src/sumui/specs.py
@@ -31,6 +33,7 @@ src/sumui/tools/__init__.py
 src/sumui/tools/chart.py
 tests/test_application_contract.py
 tests/test_characters.py
+tests/test_clipboard.py
 tests/test_r202_screen.py
 tests/test_r20_charts.py
 tests/test_sumui.py
