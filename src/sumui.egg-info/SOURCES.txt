@@ -11,6 +11,7 @@ src/sumui/backend.py
 src/sumui/bgi.py
 src/sumui/characters.py
 src/sumui/charts.py
+src/sumui/cli.py
 src/sumui/conio.py
 src/sumui/datetime_widgets.py
 src/sumui/dialogio.py
@@ -33,3 +34,4 @@ tests/test_characters.py
 tests/test_r202_screen.py
 tests/test_r20_charts.py
 tests/test_sumui.py
+tests/test_sumui_cli.py
