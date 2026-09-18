@@ -1,3 +1,8 @@
+## 0.1.0a17
+
+- Added the `sumui` front-controller entry point so the package reports its installed version consistently with the rest of the SUM ecosystem (`sumui --version`).
+- Kept `sumchart` as the chart-specific command; the new `sumui` command is intentionally a lightweight package-level CLI.
+
 ## 0.1.0a16
 
 - Resource-schema search forms now start unconstrained: create-time defaults are cleared, choices gain an explicit “any” value, and booleans use a tri-state any/true/false selector.

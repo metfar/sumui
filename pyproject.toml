@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sumui"
-version = "0.1.0a16"
+version = "0.1.0a17"
 description = "Backend-neutral UI, chart and graphics contracts for the Sum ecosystem."
 readme = "README.md"
 requires-python = ">=3.8"
@@ -20,6 +20,7 @@ classifiers = [
 ]
 
 [project.scripts]
+sumui = "sumui.cli:main"
 sumchart = "sumui.tools.chart:main"
 
 [tool.setuptools]

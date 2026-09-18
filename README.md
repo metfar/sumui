@@ -2,6 +2,13 @@
 
 `sumUI` contains backend-neutral contracts shared by the Sum ecosystem.
 
+The package-level command reports the installed release just like the other SUM packages:
+
+```bash
+sumui --version
+# sumUI 0.1.0a17
+```
+
 It is intentionally small and has no rendering dependency. `sumTUI` can render a `ChartSpec` with text/Unicode/Braille while `sumGUI` renders the same object through Pygame. Future language frontends such as sumBASIC, sumC, sumCPP, sumASM, sumPY and sumR should create these neutral specifications instead of depending directly on a terminal or graphical backend.
 
 ## Charts
