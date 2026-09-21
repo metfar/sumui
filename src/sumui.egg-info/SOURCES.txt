@@ -34,6 +34,7 @@ src/sumui/tools/chart.py
 tests/test_application_contract.py
 tests/test_characters.py
 tests/test_clipboard.py
+tests/test_keyboard.py
 tests/test_r202_screen.py
 tests/test_r20_charts.py
 tests/test_sumui.py

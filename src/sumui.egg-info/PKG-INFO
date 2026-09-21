@@ -38,6 +38,10 @@ set_clipboard_text("Σ SUM");
 print(get_clipboard_text());
 ```
 
+## Keyboard modifier normalization
+
+`sumUI.keyboard.pygame_modifier_state()` keeps SDL/Pygame modifier semantics consistent across SUM frontends. On X11, AltGr/`ISO_Level3_Shift` may arrive as `KMOD_MODE`, as Right Alt (`KMOD_RALT`), or with synthetic Ctrl+Alt bits. SumUI treats those forms as AltGr while preserving Left Alt as the real Alt/Meta modifier, allowing XKB/Xmodmap to produce Level-3 and Level-4 Unicode characters without application-specific key tables.
+
 ## Charts
 
 ```python
