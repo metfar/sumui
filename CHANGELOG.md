@@ -1,3 +1,5 @@
+- 0.1.0a20: moved HelpTopic/HelpCorpus into backend-neutral sumUI; topic lists are globally A-Z and every help topic requires a functional example.
+
 ## 0.1.0a19
 
 - Treat Pygame/SDL Right Alt (`KMOD_RALT`) as AltGr/`ISO_Level3_Shift` in addition to `KMOD_MODE`, preserving X11/XKB/Xmodmap Level-3 and Level-4 text input.
@@ -78,3 +80,5 @@
 - Established common backend, event, dialog/input, chart and graphics contracts for the coordinated r10 ecosystem.
 
 <p align=center><b>- oOo -<b></p>
+
+<p align=center><b>- oOo -</b></p>

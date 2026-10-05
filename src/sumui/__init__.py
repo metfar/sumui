@@ -10,7 +10,7 @@
 #  (at your option) any later version.
 #  
 
-__version__ = "0.1.0a19";
+__version__ = "0.1.0a20";
 
 from .backend import BackendCapabilities;
 from .application import BACKEND_NAMES, ActionSpec, FunctionKeySpec, MenuEntrySpec, MenuSpec, add_backend_arguments, backend_from_args, normalize_backend_name;
@@ -26,6 +26,7 @@ from .characters import ASC_H_CHARACTERS, ASC_H_MAX_CODE, ASC_H_RESERVED_RANGES,
 from .screen import BorderPattern, CursorState, DEFAULT_LAYER_ORDER, LayerStack, ScreenPlanes, TextScreen, coerce_border_width, coerce_cursor_state, normalize_layer_name;
 from .clipboard import ClipboardService, get_clipboard_text, set_clipboard_text;
 from .keyboard import pygame_modifier_state;
+from .help import HelpCorpus, HelpTopic, load_helpdb;
 
 __all__ = [
     "__version__", "BackendCapabilities", "BACKEND_NAMES", "ActionSpec", "FunctionKeySpec", "MenuEntrySpec", "MenuSpec", "add_backend_arguments", "backend_from_args", "normalize_backend_name", "AxisSpec", "ChartSeries", "ChartSpec", "coerce_chart_spec",
@@ -34,5 +35,5 @@ __all__ = [
     "normalize_allowed_values", "RESOURCE_CAPABILITIES", "ResourceSchema", "CalendarModel", "TimeModel", "DateTimeModel", "FontSpec",
     "ASC_H_CHARACTERS", "ASC_H_MAX_CODE", "ASC_H_RESERVED_RANGES", "asc_h_character", "find_asc_h_character", "is_reserved_asc_code", "iter_asc_h_characters",
     "CursorState", "coerce_cursor_state", "coerce_border_width", "TextScreen", "DEFAULT_LAYER_ORDER", "normalize_layer_name", "LayerStack", "BorderPattern", "ScreenPlanes",
-    "ClipboardService", "get_clipboard_text", "set_clipboard_text", "pygame_modifier_state",
+    "ClipboardService", "get_clipboard_text", "set_clipboard_text", "pygame_modifier_state", "HelpCorpus", "HelpTopic", "load_helpdb",
 ];

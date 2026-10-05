@@ -1,4 +1,4 @@
-# sumUI 0.1.0a19
+# sumUI 0.1.0a20
 
 `sumUI` contains backend-neutral contracts shared by the Sum ecosystem.
 
@@ -120,3 +120,8 @@ from sumui import bgi, conio, stdio
 Historical `SCREEN 12` and `SCREEN 13` profiles coexist with `display_mode()` for arbitrary resolutions, palette/depth declarations, AUTO/MANUAL presentation and active/visible pages.
 
 <p align=center><b>- oOo -<b></p>
+## Shared help contract
+
+`HelpTopic` and `HelpCorpus` are backend-neutral. Topic lists are exposed globally A-Z, each function/command topic carries a functional example, and application `About` metadata remains outside the help corpus.
+
+<p align=center><b>- oOo -</b></p>
