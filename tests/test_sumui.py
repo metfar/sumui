@@ -284,3 +284,14 @@ def test_resource_search_form_defaults_to_unconstrained_filters():
     assert spec.fields[0].default == "" and spec.fields[0].required is False;
     assert spec.fields[1].default == "" and spec.fields[1].options[0] == "";
     assert spec.fields[2].kind == "combo" and spec.fields[2].options == ("", "true", "false");
+
+
+def test_menu_mnemonic_parser_supports_explicit_implicit_and_literal_ampersand():
+    from sumui import parse_mnemonic;
+    explicit=parse_mnemonic("S&ave as");
+    assert explicit.text == "Save as";
+    assert explicit.mnemonic == "a" and explicit.index == 1;
+    literal=parse_mnemonic("Research && Development");
+    assert literal.text == "Research & Development" and literal.mnemonic == "";
+    implicit=parse_mnemonic("File", implicit=True);
+    assert implicit.mnemonic == "f" and implicit.index == 0;

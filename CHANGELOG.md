@@ -1,3 +1,9 @@
+## Unreleased
+
+- Added backend-neutral menu mnemonic parsing. `&File` marks `F`, `S&ave as` marks `A`, and `&&` renders a literal ampersand.
+- Added the shared `MenuInteractionConfig` with a configurable Alt-only menu hold threshold; the default is 1500 ms and `None` disables Alt-only activation.
+- Kept implicit first-character mnemonics for legacy menu definitions while allowing explicit markers to resolve collisions.
+
 - 0.1.0a20: moved HelpTopic/HelpCorpus into backend-neutral sumUI; topic lists are globally A-Z and every help topic requires a functional example.
 
 ## 0.1.0a19

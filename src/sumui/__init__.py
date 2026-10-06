@@ -19,6 +19,7 @@ from .events import EVENT_TYPES, UIEvent;
 from .dialogio import load_dialog_spec, parse_dialog_spec;
 from .graphics import BASIC16_PALETTE, VGA256_PALETTE, ColorSpec, GraphicsCommand, GraphicsMode, GraphicsProgram, ImageSpec, TableSpec, basic_mode, display_mode, indexed_basic_color, modern_mode, screen_mode, spectrum_mode;
 from .specs import DialogSpec, FieldSpec, InputSpec, MenuItemSpec, normalize_allowed_values;
+from .mnemonics import DEFAULT_ALT_MENU_HOLD_MS, MenuInteractionConfig, MnemonicLabel, parse_mnemonic;
 from .resources import RESOURCE_CAPABILITIES, ResourceSchema;
 from .datetime_widgets import CalendarModel, DateTimeModel, TimeModel;
 from .typography import FontSpec;
@@ -31,7 +32,7 @@ from .help import HelpCorpus, HelpTopic, load_helpdb;
 __all__ = [
     "__version__", "BackendCapabilities", "BACKEND_NAMES", "ActionSpec", "FunctionKeySpec", "MenuEntrySpec", "MenuSpec", "add_backend_arguments", "backend_from_args", "normalize_backend_name", "AxisSpec", "ChartSeries", "ChartSpec", "coerce_chart_spec",
     "EVENT_TYPES", "UIEvent", "load_dialog_spec", "parse_dialog_spec", "BASIC16_PALETTE", "VGA256_PALETTE", "indexed_basic_color", "ColorSpec", "GraphicsCommand", "GraphicsMode", "GraphicsProgram", "ImageSpec", "TableSpec",
-    "basic_mode", "display_mode", "modern_mode", "screen_mode", "spectrum_mode", "DialogSpec", "FieldSpec", "InputSpec", "MenuItemSpec",
+    "basic_mode", "display_mode", "modern_mode", "screen_mode", "spectrum_mode", "DialogSpec", "FieldSpec", "InputSpec", "MenuItemSpec", "DEFAULT_ALT_MENU_HOLD_MS", "MenuInteractionConfig", "MnemonicLabel", "parse_mnemonic",
     "normalize_allowed_values", "RESOURCE_CAPABILITIES", "ResourceSchema", "CalendarModel", "TimeModel", "DateTimeModel", "FontSpec",
     "ASC_H_CHARACTERS", "ASC_H_MAX_CODE", "ASC_H_RESERVED_RANGES", "asc_h_character", "find_asc_h_character", "is_reserved_asc_code", "iter_asc_h_characters",
     "CursorState", "coerce_cursor_state", "coerce_border_width", "TextScreen", "DEFAULT_LAYER_ORDER", "normalize_layer_name", "LayerStack", "BorderPattern", "ScreenPlanes",
