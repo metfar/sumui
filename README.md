@@ -119,9 +119,38 @@ from sumui import bgi, conio, stdio
 
 Historical `SCREEN 12` and `SCREEN 13` profiles coexist with `display_mode()` for arbitrary resolutions, palette/depth declarations, AUTO/MANUAL presentation and active/visible pages.
 
-<p align=center><b>- oOo -<b></p>
 ## Shared help contract
 
 `HelpTopic` and `HelpCorpus` are backend-neutral. Topic lists are exposed globally A-Z, each function/command topic carries a functional example, and application `About` metadata remains outside the help corpus.
 
 <p align=center><b>- oOo -</b></p>
+# SUM UI Components — staging técnico (no integrado)
+
+Código de referencia para corregir los componentes **en sus paquetes respectivos**, sin incrustar su implementación en `sumdisp`.
+
+## Estado comprobado
+
+- `sumui/selection_models.py` — modelo compartido de opciones y grupos, búsqueda simple y aproximada, modos `selection`/`editable`/`extensible`, validador configurable; validador de caracteres de una celda y modelo de grafía de sliders. **Probado** con `tests/test_models.py`.
+- `sumtui/widgets/groupedcombobox.py` — ampliación del `Choice` existente para saltar encabezados/separadores en la navegación y recuperar el valor al actualizar opciones. **Compila**, pero sin pruebas de terminal real; no es aún un combo TUI editable ni desplegable multilínea.
+- `sumgui/combobox_ext.py` — componente gráfico reutilizable con despliegue multilínea, scrollbar, teclado, búsqueda por texto y validación. **Compila**, pero no ha sido ensayado en Pygame ni registrado en el paquete principal.
+
+El componente nuevo no modifica por sí solo las versiones instaladas de SUM. Se proporciona como **fuente preparatoria para integrar y probar** dentro de los repositorios sumUI/sumTUI/sumGUI, no como parche instalado o versión liberada. Requiere `wcwidth` para garantizar el ancho de celda de los caracteres de slider; no se introducen soluciones de anchura aproximada.
+
+## Integración propuesta
+
+1. Incorporar `sumui/selection_models.py` al paquete `src/sumui/` y exportar `ComboEntry`, `ComboModel`, `SliderCharacters`, `valid_cell_character` desde `sumui.__init__` después de validar la API.
+2. Incorporar `sumtui/widgets/groupedcombobox.py` a `src/sumtui/widgets/` y exportar `GroupedComboBox` desde `widgets/__init__.py`.
+3. Incorporar `sumgui/combobox_ext.py` a `sumgui/` (aquí **`widgets.py` es un archivo, no un paquete**), y exportar `ComboBox` desde `sumgui.__init__` una vez probada la GUI.
+4. Reemplazar los controles particulares de `sumdisp` por componentes del toolkit **en una versión posterior**, luego de pruebas de regresión y compatibilidad.
+5. Extender temas SUM y `sumtheme` para estilos de slider, restauración del índice/scroll del editor de roles y elección de caracteres desde CharacterChart. **Estas tareas siguen pendientes**.
+
+## Verificación ejecutable
+
+```bash
+python3 tests/test_models.py
+python3 -m py_compile sumui/selection_models.py sumtui/widgets/groupedcombobox.py sumgui/combobox_ext.py
+
+```
+
+<p align=center><b>- oOo -</b></p>
+

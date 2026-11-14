@@ -20,8 +20,10 @@ src/sumui/events.py
 src/sumui/graphics.py
 src/sumui/help.py
 src/sumui/keyboard.py
+src/sumui/mnemonics.py
 src/sumui/resources.py
 src/sumui/screen.py
+src/sumui/selection_models.py
 src/sumui/specs.py
 src/sumui/stdio.py
 src/sumui/typography.py
@@ -37,6 +39,7 @@ tests/test_characters.py
 tests/test_clipboard.py
 tests/test_help.py
 tests/test_keyboard.py
+tests/test_models.py
 tests/test_r202_screen.py
 tests/test_r20_charts.py
 tests/test_sumui.py
