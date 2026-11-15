@@ -26,6 +26,7 @@ import importlib;
 import inspect;
 import sys;
 from typing import Protocol, Sequence;
+from .theme_preferences import ThemePreferences;
 
 from . import __version__;
 
@@ -74,10 +75,13 @@ class _ThemeAction(argparse.Action):
 _TYPE_HANDLERS = {"text": str, "integer": int, "float": float};
 
 
+_AUTO_THEME = object();
+
+
 class SumArgumentParser(argparse.ArgumentParser):
     """Common parser for SUM programs; accepts application-specific options.""";
 
-    def __init__(self, *args, version=None, theme_provider=None, auto_version=True, examples=None, **kwargs):
+    def __init__(self, *args, version=None, theme_provider=_AUTO_THEME, auto_version=True, examples=None, **kwargs):
         # Capture the calling package before argparse constructs subparsers.
         frame = inspect.currentframe();
         caller = frame.f_back if frame is not None else None;
@@ -89,10 +93,10 @@ class SumArgumentParser(argparse.ArgumentParser):
         self._sum_examples = tuple(examples or ());
         self._sum_help_prepared = False;
         super().__init__(*args, **kwargs);
-        self.theme_provider = theme_provider;
+        self.theme_provider = ThemePreferences(self.prog) if theme_provider is _AUTO_THEME else theme_provider;
         if version is not None:
             self.add_argument("--version", action="version", version="{} {}".format(self.prog, version));
-        if theme_provider is not None:
+        if self.theme_provider is not None:
             self.add_argument("--list-themes", action=_ThemeAction, operation="list", help="list available themes and exit");
             self.add_argument("--get-theme", "--getTheme", action=_ThemeAction, operation="get", help="show the active theme and exit");
             self.add_argument("--set-theme", "--setTheme", metavar="THEME", action=_ThemeAction, operation="set", help="save the preferred theme and exit");
@@ -156,7 +160,7 @@ class SumArgumentParser(argparse.ArgumentParser):
         return self.add_argument(*flags, **kwargs);
 
     @classmethod
-    def from_command_spec(cls, spec, version=None, theme_provider=None):
+    def from_command_spec(cls, spec, version=None, theme_provider=_AUTO_THEME):
         parser = cls(prog=spec.name, description=spec.description, version=version, theme_provider=theme_provider);
         for option in spec.options:
             parser.add_option_spec(option);

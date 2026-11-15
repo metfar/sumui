@@ -26,6 +26,7 @@ src/sumui/screen.py
 src/sumui/selection_models.py
 src/sumui/specs.py
 src/sumui/stdio.py
+src/sumui/theme_preferences.py
 src/sumui/typography.py
 src/sumui.egg-info/PKG-INFO
 src/sumui.egg-info/SOURCES.txt
@@ -46,3 +47,4 @@ tests/test_r20_charts.py
 tests/test_shared_cli.py
 tests/test_sumui.py
 tests/test_sumui_cli.py
+tests/test_theme_preferences.py

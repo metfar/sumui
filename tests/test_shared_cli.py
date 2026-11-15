@@ -76,7 +76,7 @@ def test_theme_aliases_and_validation(capsys):
 
 
 def test_without_theme_provider(capsys):
-    parser = SumArgumentParser(prog="simple", version="1");
+    parser = SumArgumentParser(prog="simple", version="1", theme_provider=None);
     assert "--list-themes" not in parser.format_help();
     assert "unrecognized arguments" in run_option(parser, ["--getTheme"], capsys, 2).err;
 

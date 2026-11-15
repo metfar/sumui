@@ -1,4 +1,4 @@
-# sumUI 0.1.0a21
+# sumUI 0.1.0a22
 
 `sumUI` contains backend-neutral contracts shared by the Sum ecosystem.
 
