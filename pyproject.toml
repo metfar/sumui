@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sumui"
-version = "0.1.0a20"
+version = "0.1.0a21"
 description = "Backend-neutral UI, chart and graphics contracts for the Sum ecosystem."
 readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "GPL-2.0-or-later" }
 authors = [{ name = "William Martinez Bas", email = "metfar@gmail.com" }]
-dependencies = []
+dependencies = ["sumcore>=0.1.0a23", ]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",

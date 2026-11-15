@@ -11,6 +11,7 @@
 #  
 
 import argparse;
+from sumui.cli import SumArgumentParser;
 from pathlib import Path;
 import sys;
 
@@ -18,7 +19,7 @@ from .. import ChartSpec, __version__;
 
 
 def _parser():
-    parser = argparse.ArgumentParser(
+    parser = SumArgumentParser(
         prog="sumchart",
         description="Render the backend-neutral sum.chart/1 format with a TUI or GUI backend.",
     );

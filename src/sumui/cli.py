@@ -22,6 +22,8 @@
 """Reusable SUM parser: implementation here; language-neutral specs in core.""";
 
 import argparse;
+import importlib;
+import inspect;
 import sys;
 from typing import Protocol, Sequence;
 
@@ -75,7 +77,17 @@ _TYPE_HANDLERS = {"text": str, "integer": int, "float": float};
 class SumArgumentParser(argparse.ArgumentParser):
     """Common parser for SUM programs; accepts application-specific options.""";
 
-    def __init__(self, *args, version=None, theme_provider=None, **kwargs):
+    def __init__(self, *args, version=None, theme_provider=None, auto_version=True, examples=None, **kwargs):
+        # Capture the calling package before argparse constructs subparsers.
+        frame = inspect.currentframe();
+        caller = frame.f_back if frame is not None else None;
+        package = caller.f_globals.get("__package__", "") if caller is not None else "";
+        self._sum_package = str(package or "").split(".")[0];
+        del frame, caller;
+        self._sum_version = version;
+        self._sum_auto_version = bool(auto_version);
+        self._sum_examples = tuple(examples or ());
+        self._sum_help_prepared = False;
         super().__init__(*args, **kwargs);
         self.theme_provider = theme_provider;
         if version is not None:
@@ -84,6 +96,45 @@ class SumArgumentParser(argparse.ArgumentParser):
             self.add_argument("--list-themes", action=_ThemeAction, operation="list", help="list available themes and exit");
             self.add_argument("--get-theme", "--getTheme", action=_ThemeAction, operation="get", help="show the active theme and exit");
             self.add_argument("--set-theme", "--setTheme", metavar="THEME", action=_ThemeAction, operation="set", help="save the preferred theme and exit");
+
+    def _ensure_common_options(self):
+        """Install missing common options lazily, after an app's own options.""";
+        if self._sum_auto_version and "--version" not in self._option_string_actions:
+            version = self._sum_version;
+            if version is None and self._sum_package:
+                try:
+                    version = getattr(importlib.import_module(self._sum_package), "__version__", None);
+                except (ImportError, AttributeError):
+                    version = None;
+            if version is not None:
+                self.add_argument("--version", action="version", version="{} {}".format(self.prog, version), help="show the version and exit");
+        if not self._sum_help_prepared:
+            self._sum_help_prepared = True;
+            if self._sum_examples:
+                statements = [];
+                for example in self._sum_examples:
+                    command = getattr(example, "command", str(example));
+                    description = getattr(example, "description", "");
+                    statements.append("  {}{}".format(command, "  # " + description if description else ""));
+            elif self._sum_auto_version:
+                statements = ["  {} --help".format(self.prog), "  {} --version".format(self.prog)];
+            else:
+                statements = [];
+            if statements and "examples:" not in str(self.epilog or "").lower():
+                self.epilog = (str(self.epilog).rstrip() + "\n\n" if self.epilog else "") + "Examples:\n" + "\n".join(statements);
+                self.formatter_class = argparse.RawDescriptionHelpFormatter;
+
+    def parse_known_args(self, args=None, namespace=None):
+        self._ensure_common_options();
+        return super().parse_known_args(args=args, namespace=namespace);
+
+    def format_help(self):
+        self._ensure_common_options();
+        return super().format_help();
+
+    def format_usage(self):
+        self._ensure_common_options();
+        return super().format_usage();
 
     def add_option_spec(self, spec):
         """Compile an OptionSpec into argparse without changing the contract.""";

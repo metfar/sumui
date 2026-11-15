@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: sumui
-Version: 0.1.0a20
+Version: 0.1.0a21
 Summary: Backend-neutral UI, chart and graphics contracts for the Sum ecosystem.
 Author-email: William Martinez Bas <metfar@gmail.com>
 License: GPL-2.0-or-later
@@ -12,9 +12,10 @@ Classifier: Topic :: Software Development :: User Interfaces
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
 License-File: LICENSE
+Requires-Dist: sumcore>=0.1.0a23
 Dynamic: license-file
 
-# sumUI 0.1.0a20
+# sumUI 0.1.0a21
 
 `sumUI` contains backend-neutral contracts shared by the Sum ecosystem.
 
