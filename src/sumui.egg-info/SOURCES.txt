@@ -42,5 +42,6 @@ tests/test_keyboard.py
 tests/test_models.py
 tests/test_r202_screen.py
 tests/test_r20_charts.py
+tests/test_shared_cli.py
 tests/test_sumui.py
 tests/test_sumui_cli.py
