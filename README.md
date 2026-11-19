@@ -153,4 +153,3 @@ python3 -m py_compile sumui/selection_models.py sumtui/widgets/groupedcombobox.p
 ```
 
 <p align=center><b>- oOo -</b></p>
-
